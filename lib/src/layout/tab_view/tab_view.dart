@@ -44,8 +44,8 @@ class MacosTabView extends StatefulWidget {
     required this.children,
     this.position = MacosTabPosition.top,
     this.padding = const EdgeInsets.all(12.0),
-  }) : assert(controller.length == children.length &&
-            controller.length == tabs.length);
+    this.showTabs = true,
+  }) : assert(controller.length == children.length && controller.length == tabs.length);
 
   /// This widget's selection state.
   final MacosTabController controller;
@@ -65,6 +65,11 @@ class MacosTabView extends StatefulWidget {
   ///
   /// Defaults to `EdgeInsets.all(12.0)`.
   final EdgeInsetsGeometry padding;
+
+  /// Visibility of the [tabs].
+  ///
+  /// Defaults to true
+  final bool showTabs;
 
   @override
   State<MacosTabView> createState() => _MacosTabViewState();
@@ -178,19 +183,20 @@ class _MacosTabViewState extends State<MacosTabView> {
             ),
           ),
         ),
-        Positioned(
-          top: widget.position == MacosTabPosition.top ? 0 : null,
-          bottom: widget.position == MacosTabPosition.bottom ? 0 : null,
-          left: widget.position == MacosTabPosition.left ? 0 : null,
-          right: widget.position == MacosTabPosition.right ? 0 : null,
-          child: RotatedBox(
-            quarterTurns: _tabRotation,
-            child: MacosSegmentedControl(
-              controller: widget.controller,
-              tabs: widget.tabs,
+        if (widget.showTabs)
+          Positioned(
+            top: widget.position == MacosTabPosition.top ? 0 : null,
+            bottom: widget.position == MacosTabPosition.bottom ? 0 : null,
+            left: widget.position == MacosTabPosition.left ? 0 : null,
+            right: widget.position == MacosTabPosition.right ? 0 : null,
+            child: RotatedBox(
+              quarterTurns: _tabRotation,
+              child: MacosSegmentedControl(
+                controller: widget.controller,
+                tabs: widget.tabs,
+              ),
             ),
           ),
-        ),
       ],
     );
   }
